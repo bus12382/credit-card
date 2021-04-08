@@ -80,10 +80,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  public onSubmit(demoForm: FormGroup) {
-    this.submitted = true;
-  }
-
   public EventCard(result: boolean) {
     this.eventCard = result;
   }
