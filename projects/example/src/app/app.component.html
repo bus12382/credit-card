@@ -1,0 +1,74 @@
+<div class="flip-card">
+    <div class="flip-card-inner" [ngClass]="{'card-front': eventCard, 'card-back': !eventCard }">
+        <div class="flip-card-front">
+            <img class="img-visa" src="https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/visa.png"><br>
+            <img class="img-chip" src="https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/chip.png"><br><br><br>
+
+            <input class="input-lg cardNumber" [ngClass]="{'border-Off': eventNumber, 'border-On': !eventNumber }" value="{{ card.cardNumber }}" disabled>
+
+            <div class="col-md-9 boxname" [ngClass]="{'border-Off': eventName, 'border-On': !eventName }">
+                <label class="control-label name">Card holder</label><br>
+                <input class="input-lg cardName" value="{{ card.cardName }}" disabled>
+            </div>
+            <div class="col-md-3 boxExp" [ngClass]="{'border-Off': eventExp, 'border-On': !eventExp }">
+                <label class="control-label exp">Expiration</label><br>
+                <!-- <input class="input-lg cardExp" value="{{ card.expirationMonth }} / {{card.expirationYear.substring(2,4) }}" placeholder="MM/YY" disabled> -->
+
+                <input class="input-lg cardExpMonth" *ngIf="card.expirationMonth == '' " value="MM /" placeholder="MM" disabled>
+                <input class="input-lg cardExpMonth" *ngIf="card.expirationMonth" value="{{card.expirationMonth}} /" placeholder="MM" disabled>
+                <input class="input-lg cardExpYear" *ngIf="card.expirationYear == '' " value="YY" placeholder="YY" disabled>
+                <input class="input-lg cardExpYear" *ngIf="card.expirationYear" value="{{card.expirationYear.substring(2,4)}} " placeholder="YY" disabled>
+            </div>
+        </div>
+        <div class="flip-card-back">
+            <div class="strip">&nbsp;</div>
+            <label class="control-label cvvLable">CVV</label><br>
+            <input class="input-lg ccvCard" value="{{ card.cvvNumber }}" disabled>
+            <img class="img-visa" src="https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/visa.png"><br>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <form [formGroup]="demoForm" (ngSubmit)="onSubmit(demoForm)" novalidate style="max-width: 500px; margin: 0 auto; padding-top: 20px;">
+        <div class="row">
+            <div class="col-md-12">
+                <label for="cc-number" class="control-label">Card Number</label><br>
+                <input id="cc-number" [ngClass]="{'borderInput-Off': validateNumber, 'borderInput-On': !validateNumber }" [(ngModel)]="card.cardNumber" (focus)="EventCardNumber(false)" (blur)="EventCardNumber(true)" formControlName="creditCard" type="tel" class="input-lg form-control cc-number"
+                    autocomplete="cc-number" ccNumber>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"><br>
+                <label for="cc-name" class="control-label">Card Name</label><br>
+                <input id="cc-name" [ngClass]="{'borderInput-Off': validateName, 'borderInput-On': !validateName }" [(ngModel)]="card.cardName" (focus)="EventCardName(false)" (blur)="EventCardName(true)" formControlName="name" type="text" class="input-lg form-control">
+            </div>
+        </div>
+        <div class="row">
+            <br>
+            <div class="col-md-4">
+                <label class="control-label">Expiration Date</label><br>
+                <select [ngClass]="{'borderInput-Off': validateMonth, 'borderInput-On': !validateMonth }" [(value)]="card.expirationMonth" #selectMonth (change)="resultMonth(selectMonth.value)" (focus)="EventCardExp(false)" (blur)="EventCardExp(true)" formControlName="expMonth"
+                    class="input-lg form-control">
+                    <option value="" selected="selected" disabled>Month</option>
+                    <option *ngFor="let item of month;" [value]="item.id">{{item.id}}</option>
+                </select>
+            </div>
+            <div class="col-md-4"><br>
+                <select [ngClass]="{'borderInput-Off': validateYear, 'borderInput-On': !validateYear }" [(value)]="card.expirationYear" #selectYear (change)="resultYear(selectYear.value)" (focus)="EventCardExp(false)" (blur)="EventCardExp(true)" formControlName="expYear"
+                    style="margin-left: -12px; margin-top: 5px;" class="input-lg form-control">
+                    <option value="" selected="selected" disabled>Year</option>
+                    <option *ngFor="let item of year;" [value]="item.name" >{{item.name}}</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="cc-cvc" class="control-label">CVV</label><br>
+                <input id="cc-cvc" [ngClass]="{'borderInput-Off': validateCVV, 'borderInput-On': !validateCVV }" [(ngModel)]="card.cvvNumber" (focus)="EventCard(false)" (blur)="EventCard(true)" formControlName="cvc" type="tel" class="input-lg form-control cc-cvc" autocomplete="off"
+                    required ccCVC>
+            </div>
+        </div>
+        <br>
+        <button type="submit" (click)="checkData()" style="margin-top: 15px;" class="input-lg form-control btn btn-primary">Submit</button>
+    </form>
+</div>
